@@ -68,6 +68,17 @@ impl ChessPlayer {
                 }
             })
             .collect()
+    ) -> Vec<Vec<Vec<ChessSquareCoordinates>>> {
+        opposing_player
+            .piece_squares_map
+            .iter()
+            .fold(vec![], |mut acc, (_coord, piece)| {
+                let potencial_moves = piece.get_potencial_moves(chess_board, turn_details);
+                if potencial_moves.contains(&vec![self.king_position]) {
+                    acc.push(potencial_moves);
+                }
+                acc
+            })
     }
 }
 impl fmt::Display for ChessPlayerColor {

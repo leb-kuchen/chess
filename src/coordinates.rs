@@ -37,6 +37,42 @@ macro_rules! impl_squares_iter {													// optional
                     row: self.0.row,
                     col: self.0.col,
                 })
+lazy_static! {
+    pub static ref VALID_COORDINATES: Set<ChessSquareCoordinates> = set_valid_squares();
+}
+
+fn set_valid_squares() -> Set<ChessSquareCoordinates> {
+    let mut valid_squares = Set::new();
+    for row in 1..=8 {
+        for col in 'A'..='H' {
+            valid_squares.insert(ChessSquareCoordinates::new(col, row));
+        }
+    }
+    valid_squares
+}
+impl ChessSquareCoordinates {
+    pub fn new(col: char, row: u8) -> Self {
+        Self { row, col }
+    }
+}
+macro_rules! impl_squares_iter {
+    ($square_dir_iter: ty,  $dir: expr) => {
+        impl Iterator for $square_dir_iter {
+            type Item = ChessSquareCoordinates;
+            fn next(&mut self) -> Option<Self::Item> {
+                match $dir {
+                    CoordinateDirection::Row(step) => self.0.row.shift(step),
+                    CoordinateDirection::Col(step) => self.0.col.shift(step),
+                    CoordinateDirection::Diagonal((col_step, row_step)) => {
+                        self.0.col.shift(col_step);
+                        self.0.row.shift(row_step);
+                    }
+                };
+                let new_coordinate = ChessSquareCoordinates::new(self.0.col, self.0.row);
+                if !VALID_COORDINATES.contains(&new_coordinate) {
+                    return None;
+                }
+                Some(new_coordinate)
             }
         }
     };
@@ -62,7 +98,9 @@ impl FromStr for ChessSquareCoordinates {
     }
 }
 impl Ord for ChessSquareCoordinates {
+
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+    fn cmp(&self, _other: &Self) -> std::cmp::Ordering {
         /*
         let rev_col_coordinates = |coordinates: &ChessSquareCoordinates|ChessSquareCoordinates {
             col: -(coordinates.col as u8 as i8 - 63 - 8) as u8 as char,
@@ -88,7 +126,6 @@ enum TypeToShift {
     Int,
     Char,
 }
-
 trait ShiftCoordinates {
     fn shift(&mut self, step: i8);
 }
@@ -124,6 +161,10 @@ enum RowOrCol {
 enum ToCheck {
     Either,
     Both,
+enum CoordinateDirection {
+    Row(i8),
+    Col(i8),
+    Diagonal((i8, i8)),
 }
 
 // better names
@@ -140,6 +181,15 @@ impl_squares_iter! {LowerRightSquare, RowOrCol::Both((1, -1)), MaxOrMin::MinAndM
 impl_squares_iter! {LowerLeftSquare, RowOrCol::Both((-1, -1)), MaxOrMin::MinAndMax::<u8, char>((1, 'A')), <, row, col, <}
 impl_squares_iter! {UpperRightSquare, RowOrCol::Both((1, 1)), MaxOrMin::MinAndMax::<u8, char>((8, 'H')), >, row, col, >}
 impl_squares_iter! {UpperLeftSquare, RowOrCol::Both((-1, 1)), MaxOrMin::MinAndMax::<u8, char>((8, 'A')), >, row, col, <}
+//
+impl_squares_iter! {UpperSquare, CoordinateDirection::Row(1)}
+impl_squares_iter! {LeftSquare, CoordinateDirection::Col(-1)}
+impl_squares_iter! {RightSquare, CoordinateDirection::Col(1)}
+impl_squares_iter! {LowerSquare, CoordinateDirection::Row(-1)}
+impl_squares_iter! {LowerRightSquare, CoordinateDirection::Diagonal((1, -1))}
+impl_squares_iter! {LowerLeftSquare, CoordinateDirection::Diagonal((-1, -1))}
+impl_squares_iter! {UpperRightSquare, CoordinateDirection::Diagonal((1, 1))}
+impl_squares_iter! {UpperLeftSquare, CoordinateDirection::Diagonal((-1, 1))}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -222,4 +272,3 @@ pub struct RightSquare(pub ChessSquareCoordinates);
 pub struct LeftSquare(pub ChessSquareCoordinates);
 pub struct UpperSquare(pub ChessSquareCoordinates);
 pub struct LowerSquare(pub ChessSquareCoordinates);
-

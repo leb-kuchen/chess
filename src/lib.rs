@@ -11,6 +11,15 @@ use std::{
 	collections::{HashMap as Map, HashSet as Set},
 	io,
 	str::FromStr,			
+#[macro_use]
+extern crate lazy_static;
+use core::fmt;
+
+use rand::Rng;
+pub use std::{
+    collections::{HashMap as Map, HashSet as Set},
+    io,
+    str::FromStr,
 };
 pub mod chessboard;
 pub mod chessgame;
@@ -29,6 +38,10 @@ pub fn get_struct() {
     let b = ChessSquareCoordinates { row: 5, col: 'D' };
     let c = ChessSquareCoordinates { row: 4, col: 'D' };
     let d = ChessSquareCoordinates { row: 2, col: 'D' };
+    let _a = ChessSquareCoordinates { row: 2, col: 'B' };
+    let _b = ChessSquareCoordinates { row: 5, col: 'D' };
+    let _c = ChessSquareCoordinates { row: 4, col: 'D' };
+    let _d = ChessSquareCoordinates { row: 2, col: 'D' };
     /*
     println!("{:?}", LeftSquare(a).last());
     println!("{:?}", UpperSquare(a).last());
@@ -43,13 +56,14 @@ pub fn get_struct() {
     let bottom_right = Coords::from_str("H1").unwrap();
     let top_left = Coords::from_str("A8").unwrap();
     let top_right = Coords::from_str("H8").unwrap();
+    let _bottom_left = Coords::from_str("A1").unwrap();
+    let _bottom_right = Coords::from_str("H1").unwrap();
+    let _top_left = Coords::from_str("A8").unwrap();
+    let _top_right = Coords::from_str("H8").unwrap();
 }
 
 // Enum InvvaidInputReason
 // Has Won / King in Danger
-
-
-
 // some professional error handling
 /*
 enum ChessSquareCreationError {
@@ -151,8 +165,6 @@ pub struct ChessPlayers {
     black_player: ChessPlayer,
     white_player: ChessPlayer,
 }
-
-
 pub enum ValidPieceMoveSquaresCreationOptions {
     InsertAllValidSquaresIntoOneSet,
     InsertOpponentsValidSquareOfDirection,

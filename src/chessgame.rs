@@ -69,6 +69,7 @@ impl ChessGame {
         // it can be blocked
         // or the king can escape
         //  println!("{:?}", king_is_threathend);
+        println!("{:#?}", king_is_threathend);
         if !king_is_threathend.is_empty() {
             println!("Schach");
         }
@@ -104,6 +105,15 @@ impl ChessGame {
                     // king is threathend logic
                     // make move (n)  logic needs to be seperated // ai can use logic for later to check for win
                     // ai calculate piece score / hashmap seems sensible
+
+                    /*
+                        let potencial_valid = piece.get_potencial_moves(
+                            &chess_board,
+                            &turn_details
+                        );
+                        println!("{:#?}", potencial_valid);
+
+                    */
 
                     let valid_squares = piece.determine_valid_moves(
                         &chess_board,
