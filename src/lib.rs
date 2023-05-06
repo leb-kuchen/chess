@@ -10,7 +10,8 @@ use rand::Rng;
 use std::{
 	collections::{HashMap as Map, HashSet as Set},
 	io,
-	str::FromStr,			
+	str::FromStr,	
+}		
 #[macro_use]
 extern crate lazy_static;
 use core::fmt;
