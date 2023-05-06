@@ -1,6 +1,5 @@
 use crate::*;
 
-
 use terminal_size::terminal_size;
 
 impl ChessBoard {
@@ -61,28 +60,6 @@ impl ChessBoard {
             }
         }
     }
-
-
-    pub fn draw_chess_board(&self, _turn_details: &Turn) {
-        let printed_board = self
-            .board_vec
-            .iter()
-            .map(|row| {
-                format!(
-                    "{}\n",
-                    row.iter()
-                        .map(|col| {
-                            if let Some(piece) = self.squares_map[&col.coordinates] {
-                                format!("{} ", piece)
-                            } else {
-                                format!("{} ", col.color)
-                            }
-                        })
-                        .collect::<String>()
-                )
-            })
-            .collect::<String>();
-
     pub fn draw_chess_board(&self, turn_details: &Turn) {
         use either::Either;
         let printed_board = match turn_details.active_player_color {
@@ -134,7 +111,7 @@ pub fn center_string(to_center: &str, center_options: CenterOptions) -> String {
     } = center_options;
     let (width, heigt) =
         terminal_size().unwrap_or((terminal_size::Width(100), terminal_size::Height(25)));
-    let (width, _height) = (width.0 as usize, height.0);
+    let (width, _heigt) = (width.0 as usize, heigt.0);
     let to_center_len = to_center.chars().count();
     let remaining_space = ((width - to_center_len) / 2) as usize;
     let remaing_space = match fill_step {

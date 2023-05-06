@@ -16,12 +16,9 @@ impl ChessPlayer {
             .collect::<Map<_, _>>();
         let king_position = piece_squares_map
             .iter()
-            .find_map(|(key, val)| {
-                if val.name == ChessPieceNames::King {
-                    Some(key)
-                } else {
-                    None
-                }
+            .find_map(|(key, val)| match val.name {
+                ChessPieceNames::King => Some(key),
+                _ => None,
             })
             .unwrap();
         Self {
@@ -68,6 +65,8 @@ impl ChessPlayer {
                 }
             })
             .collect()
+    }
+    /*
     ) -> Vec<Vec<Vec<ChessSquareCoordinates>>> {
         opposing_player
             .piece_squares_map
@@ -80,6 +79,7 @@ impl ChessPlayer {
                 acc
             })
     }
+    */
 }
 impl fmt::Display for ChessPlayerColor {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> fmt::Result {

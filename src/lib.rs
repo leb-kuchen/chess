@@ -8,20 +8,12 @@ use crossterm::{
 };
 use rand::Rng;
 use std::{
-	collections::{HashMap as Map, HashSet as Set},
-	io,
-	str::FromStr,	
-}		
-#[macro_use]
-extern crate lazy_static;
-use core::fmt;
-
-use rand::Rng;
-pub use std::{
     collections::{HashMap as Map, HashSet as Set},
     io,
     str::FromStr,
 };
+#[macro_use]
+extern crate lazy_static;
 pub mod chessboard;
 pub mod chessgame;
 pub mod chesspiece;

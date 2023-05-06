@@ -37,6 +37,10 @@ macro_rules! impl_squares_iter {													// optional
                     row: self.0.row,
                     col: self.0.col,
                 })
+         	}
+        }
+	}
+}
 lazy_static! {
     pub static ref VALID_COORDINATES: Set<ChessSquareCoordinates> = set_valid_squares();
 }
@@ -98,8 +102,6 @@ impl FromStr for ChessSquareCoordinates {
     }
 }
 impl Ord for ChessSquareCoordinates {
-
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
     fn cmp(&self, _other: &Self) -> std::cmp::Ordering {
         /*
         let rev_col_coordinates = |coordinates: &ChessSquareCoordinates|ChessSquareCoordinates {
@@ -161,6 +163,7 @@ enum RowOrCol {
 enum ToCheck {
     Either,
     Both,
+}
 enum CoordinateDirection {
     Row(i8),
     Col(i8),
@@ -172,16 +175,6 @@ enum CoordinateDirection {
 // first test for easy development
 // shift function
 // coordinates string fromstr
-//																	ignore second generic if same type || more intiutive ordering
-impl_squares_iter! {UpperSquare, RowOrCol::Row(1), MaxOrMin::MinOrMax::<u8, u8>(8), >, row, row, >}
-impl_squares_iter! {LeftSquare, RowOrCol::Col(-1), MaxOrMin::MinOrMax::<char, char>('A'), <, col, col, <}
-impl_squares_iter! {RightSquare, RowOrCol::Col(1), MaxOrMin::MinOrMax::<char, char>('H'), >, col, col, >}
-impl_squares_iter! {LowerSquare, RowOrCol::Row(-1), MaxOrMin::MinOrMax::<u8, u8>(1), <, row, row, <}
-impl_squares_iter! {LowerRightSquare, RowOrCol::Both((1, -1)), MaxOrMin::MinAndMax::<u8, char>((1, 'H')), <, row, col, >}
-impl_squares_iter! {LowerLeftSquare, RowOrCol::Both((-1, -1)), MaxOrMin::MinAndMax::<u8, char>((1, 'A')), <, row, col, <}
-impl_squares_iter! {UpperRightSquare, RowOrCol::Both((1, 1)), MaxOrMin::MinAndMax::<u8, char>((8, 'H')), >, row, col, >}
-impl_squares_iter! {UpperLeftSquare, RowOrCol::Both((-1, 1)), MaxOrMin::MinAndMax::<u8, char>((8, 'A')), >, row, col, <}
-//
 impl_squares_iter! {UpperSquare, CoordinateDirection::Row(1)}
 impl_squares_iter! {LeftSquare, CoordinateDirection::Col(-1)}
 impl_squares_iter! {RightSquare, CoordinateDirection::Col(1)}
