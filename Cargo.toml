@@ -8,5 +8,13 @@ edition = "2021"
 [dependencies]
 crossterm = "0.26.1"
 dialoguer = "0.10.4"
+<<<<<<< HEAD
 rand = "0.8.5"
 read_input = "0.8.6"
+=======
+either = "1.8.1"
+lazy_static = "1.4.0"
+rand = "0.8.5"
+read_input = "0.8.6"
+terminal_size = "0.2.6"
+>>>>>>> 1e1aa8c (f)

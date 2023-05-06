@@ -50,6 +50,7 @@ impl ChessPlayer {
         opposing_player: &ChessPlayer,
         chess_board: &ChessBoard,
         turn_details: &Turn,
+<<<<<<< HEAD
     ) -> Vec<ChessPiece> {
         opposing_player
             .piece_squares_map
@@ -68,6 +69,19 @@ impl ChessPlayer {
                 }
             })
             .collect()
+=======
+    ) -> Vec<Vec<Vec<ChessSquareCoordinates>>> {
+        opposing_player
+            .piece_squares_map
+            .iter()
+            .fold(vec![], |mut acc, (_coord, piece)| {
+                let potencial_moves = piece.get_potencial_moves(chess_board, turn_details);
+                if potencial_moves.contains(&vec![self.king_position]) {
+                    acc.push(potencial_moves);
+                }
+                acc
+            })
+>>>>>>> 1e1aa8c (f)
     }
 }
 impl fmt::Display for ChessPlayerColor {

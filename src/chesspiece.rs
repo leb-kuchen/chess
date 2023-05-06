@@ -155,6 +155,96 @@ impl ChessPiece {
             valid_squares: valid_squares.valid_squares,
         }
     }
+<<<<<<< HEAD
+=======
+    pub fn get_potencial_moves(
+        &self,
+        _board: &ChessBoard,
+        turn_details: &Turn,
+    ) -> Vec<Vec<ChessSquareCoordinates>> {
+        type Direction = ChessPieceMoveDirections;
+        type DirectionMoveProperty = ChessPieceDirectionMoveProperty;
+        let Direction {
+            diagonal,
+            vertical,
+            horizontal,
+            knight: _,
+        } = self.move_directions;
+        let vertical_range = match vertical {
+            DirectionMoveProperty::Unlimited => 10,
+            _ => 1,
+        };
+        //	 let diagonal_range;
+        // let horizontal_range;
+        let mut valid_squares = vec![];
+
+        match horizontal {
+            DirectionMoveProperty::Unlimited | DirectionMoveProperty::Limited(_) => valid_squares
+                .extend([
+                    RightSquare(self.position).take(vertical_range).collect(),
+                    LeftSquare(self.position).take(vertical_range).collect(),
+                ]),
+            _ => (),
+        }
+        match vertical {
+            DirectionMoveProperty::Unlimited | DirectionMoveProperty::Limited(_) => valid_squares
+                .extend([
+                    LowerSquare(self.position).take(vertical_range).collect(),
+                    UpperSquare(self.position).take(vertical_range).collect(),
+                ]),
+            DirectionMoveProperty::Pawn => {
+                match turn_details.active_player_color {
+                    ChessPlayerColor::Black => valid_squares
+                        .push(LowerSquare(self.position).take(vertical_range).collect()),
+                    ChessPlayerColor::White => valid_squares
+                        .push(UpperSquare(self.position).take(vertical_range).collect()),
+                }
+            }
+            _ => (),
+        }
+        match diagonal {
+            DirectionMoveProperty::Unlimited | DirectionMoveProperty::Limited(_) => valid_squares
+                .extend([
+                    LowerRightSquare(self.position)
+                        .take(vertical_range)
+                        .collect(),
+                    LowerLeftSquare(self.position)
+                        .take(vertical_range)
+                        .collect(),
+                    UpperRightSquare(self.position)
+                        .take(vertical_range)
+                        .collect(),
+                    UpperLeftSquare(self.position)
+                        .take(vertical_range)
+                        .collect(),
+                ]),
+            DirectionMoveProperty::Pawn => match turn_details.active_player_color {
+                ChessPlayerColor::Black => valid_squares.extend([
+                    LowerRightSquare(self.position)
+                        .take(vertical_range)
+                        .collect(),
+                    LowerLeftSquare(self.position)
+                        .take(vertical_range)
+                        .collect(),
+                ]),
+                ChessPlayerColor::White => valid_squares.extend([
+                    UpperRightSquare(self.position)
+                        .take(vertical_range)
+                        .collect(),
+                    UpperLeftSquare(self.position)
+                        .take(vertical_range)
+                        .collect(),
+                ]),
+            },
+            _ => (),
+        }
+        valid_squares
+    }
+    fn get_direction(&self) -> Vec<ChessSquareCoordinates> {
+        todo!()
+    }
+    fn square_contains_piece() {}
+>>>>>>> 1e1aa8c (f)
 }
 
 impl fmt::Display for ChessPiece {
@@ -195,7 +285,10 @@ impl fmt::Display for ChessPieceNames {
     }
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1e1aa8c (f)
 impl<'a> ValidPieceMoveSquaresCreationUtility<'a> {
     pub fn new(
         board_squares_map: &'a Map<ChessSquareCoordinates, Option<ChessPiece>>,

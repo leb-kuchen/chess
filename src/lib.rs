@@ -1,6 +1,7 @@
 // field of the pieces that block in range
 // 2048
 // impl FromStr seems for ChessSquareCoordinates is more flexible
+<<<<<<< HEAD
 use core::fmt;
 use crossterm::{
     execute,
@@ -11,6 +12,17 @@ use std::{
 	collections::{HashMap as Map, HashSet as Set},
 	io,
 	str::FromStr,			
+=======
+#[macro_use]
+extern crate lazy_static;
+use core::fmt;
+
+use rand::Rng;
+pub use std::{
+    collections::{HashMap as Map, HashSet as Set},
+    io,
+    str::FromStr,
+>>>>>>> 1e1aa8c (f)
 };
 pub mod chessboard;
 pub mod chessgame;
@@ -25,10 +37,17 @@ pub use crate::{chessboard::*, chessgame::*, chesspiece::*, chessplayer::*, coor
 
 pub fn get_struct() {
     type Coords = ChessSquareCoordinates;
+<<<<<<< HEAD
     let a = ChessSquareCoordinates { row: 2, col: 'B' };
     let b = ChessSquareCoordinates { row: 5, col: 'D' };
     let c = ChessSquareCoordinates { row: 4, col: 'D' };
     let d = ChessSquareCoordinates { row: 2, col: 'D' };
+=======
+    let _a = ChessSquareCoordinates { row: 2, col: 'B' };
+    let _b = ChessSquareCoordinates { row: 5, col: 'D' };
+    let _c = ChessSquareCoordinates { row: 4, col: 'D' };
+    let _d = ChessSquareCoordinates { row: 2, col: 'D' };
+>>>>>>> 1e1aa8c (f)
     /*
     println!("{:?}", LeftSquare(a).last());
     println!("{:?}", UpperSquare(a).last());
@@ -39,17 +58,27 @@ pub fn get_struct() {
     test_coords.sort();
     println!("{:?}", test_coords);
     */
+<<<<<<< HEAD
     let bottom_left = Coords::from_str("A1").unwrap();
     let bottom_right = Coords::from_str("H1").unwrap();
     let top_left = Coords::from_str("A8").unwrap();
     let top_right = Coords::from_str("H8").unwrap();
+=======
+    let _bottom_left = Coords::from_str("A1").unwrap();
+    let _bottom_right = Coords::from_str("H1").unwrap();
+    let _top_left = Coords::from_str("A8").unwrap();
+    let _top_right = Coords::from_str("H8").unwrap();
+>>>>>>> 1e1aa8c (f)
 }
 
 // Enum InvvaidInputReason
 // Has Won / King in Danger
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 1e1aa8c (f)
 // some professional error handling
 /*
 enum ChessSquareCreationError {
@@ -152,7 +181,10 @@ pub struct ChessPlayers {
     white_player: ChessPlayer,
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1e1aa8c (f)
 pub enum ValidPieceMoveSquaresCreationOptions {
     InsertAllValidSquaresIntoOneSet,
     InsertOpponentsValidSquareOfDirection,
