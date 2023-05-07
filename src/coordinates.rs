@@ -1,46 +1,4 @@
 use crate::*;
-
-macro_rules! impl_squares_iter {													// optional
-    ($square_dir: ty,  $row_or_col: expr, $max_or_min: expr, $op: tt, $dir: ident, $dir2: ident, $op2: tt) => {
-        impl Iterator for $square_dir {
-            type Item = ChessSquareCoordinates;
-            fn next(&mut self) -> Option<Self::Item> {
-                match $row_or_col {
-                	// ident2 ?
-                    RowOrCol::Row(step) => self.0.row.shift(step),
-                    RowOrCol::Col(step) => self.0.col.shift(step),
-                    RowOrCol::Both((col_step, row_step)) => {
-                    	self.0.col.shift(col_step);
-                    	self.0.row.shift(row_step);
-                    }
-                };
-                match $row_or_col {
-                    RowOrCol::Col(_) | RowOrCol::Row(_) => {
-                    	if let MaxOrMin::MinOrMax(border) = $max_or_min {
-                			if compare!(self.0.$dir $op border) {
-                        		return None;
-                        	}
-                		}
-                    }
-
-                    RowOrCol::Both(_) => match $max_or_min {
-                        MaxOrMin::MinAndMax((border1, border2)) => {
-                        	if compare!(self.0.$dir $op border1) || compare!(self.0.$dir2 $op2 border2) {
-                        		return None
-                        	}
-                        }
-                        _ => (),
-                    },
-                }
-                // stop when self in map is enemy
-                Some(ChessSquareCoordinates {
-                    row: self.0.row,
-                    col: self.0.col,
-                })
-         	}
-        }
-	}
-}
 lazy_static! {
     pub static ref VALID_COORDINATES: Set<ChessSquareCoordinates> = set_valid_squares();
 }
@@ -91,8 +49,12 @@ impl FromStr for ChessSquareCoordinates {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let first_two_chars = s.trim().replace(' ', "").to_uppercase();
         let mut first_two_chars = first_two_chars.chars().take(2);
-        let (col, row) = match (first_two_chars.next(), first_two_chars.next()) {
-            (Some(col @ 'A'..='H'), Some(row @ '1'..='8')) => (col, row),
+        let (col, row) = match (
+            first_two_chars.next().ok_or(ParseCoordinatesError)?,
+            first_two_chars.next().ok_or(ParseCoordinatesError)?,
+        ) {
+            (col @ 'A'..='H', row @ '1'..='8') => (col, row),
+            (row @ '1'..='8', col @ 'A'..='H') => (col, row),
             _ => return Err(ParseCoordinatesError),
         };
         Ok(Self {
@@ -118,16 +80,6 @@ impl Ord for ChessSquareCoordinates {
 }
 // impl PartialOrd ?
 // remove  derive
-macro_rules! compare {
-    ($op: expr) => {
-        $op
-    };
-}
-
-enum TypeToShift {
-    Int,
-    Char,
-}
 trait ShiftCoordinates {
     fn shift(&mut self, step: i8);
 }
@@ -143,26 +95,6 @@ impl ShiftCoordinates for char {
         //	println!("{} {}", self, step);
         *self = (*self as u8 as i8 + step) as u8 as char;
     }
-}
-enum MaxOrMin<T, U> {
-    MinOrMax(T),
-    MinAndMax((T, U)),
-    /*
-    Max((u8, Option<u8>)),
-    Min((u8, Option<u8>)),
-    MinMax((u8, u8)),
-    MaxMin((u8, u8)),
-    */
-}
-
-enum RowOrCol {
-    Row(i8),
-    Col(i8),
-    Both((i8, i8)),
-}
-enum ToCheck {
-    Either,
-    Both,
 }
 enum CoordinateDirection {
     Row(i8),

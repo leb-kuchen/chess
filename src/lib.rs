@@ -2,10 +2,7 @@
 // 2048
 // impl FromStr seems for ChessSquareCoordinates is more flexible
 use core::fmt;
-use crossterm::{
-    execute,
-    style::{Color, Print, ResetColor, SetBackgroundColor, SetForegroundColor},
-};
+
 use rand::Rng;
 use std::{
     collections::{HashMap as Map, HashSet as Set},
@@ -27,10 +24,10 @@ pub use crate::{chessboard::*, chessgame::*, chesspiece::*, chessplayer::*, coor
 
 pub fn get_struct() {
     type Coords = ChessSquareCoordinates;
-    let a = ChessSquareCoordinates { row: 2, col: 'B' };
-    let b = ChessSquareCoordinates { row: 5, col: 'D' };
-    let c = ChessSquareCoordinates { row: 4, col: 'D' };
-    let d = ChessSquareCoordinates { row: 2, col: 'D' };
+    let _a = ChessSquareCoordinates { row: 2, col: 'B' };
+    let _b = ChessSquareCoordinates { row: 5, col: 'D' };
+    let _c = ChessSquareCoordinates { row: 4, col: 'D' };
+    let _d = ChessSquareCoordinates { row: 2, col: 'D' };
     let _a = ChessSquareCoordinates { row: 2, col: 'B' };
     let _b = ChessSquareCoordinates { row: 5, col: 'D' };
     let _c = ChessSquareCoordinates { row: 4, col: 'D' };
@@ -45,10 +42,10 @@ pub fn get_struct() {
     test_coords.sort();
     println!("{:?}", test_coords);
     */
-    let bottom_left = Coords::from_str("A1").unwrap();
-    let bottom_right = Coords::from_str("H1").unwrap();
-    let top_left = Coords::from_str("A8").unwrap();
-    let top_right = Coords::from_str("H8").unwrap();
+    let _bottom_left = Coords::from_str("A1").unwrap();
+    let _bottom_right = Coords::from_str("H1").unwrap();
+    let _top_left = Coords::from_str("A8").unwrap();
+    let _top_right = Coords::from_str("H8").unwrap();
     let _bottom_left = Coords::from_str("A1").unwrap();
     let _bottom_right = Coords::from_str("H1").unwrap();
     let _top_left = Coords::from_str("A8").unwrap();

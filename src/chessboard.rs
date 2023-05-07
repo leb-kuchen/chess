@@ -5,6 +5,8 @@ use terminal_size::terminal_size;
 impl ChessBoard {
     pub fn new() -> ChessBoard {
         let mut chess_board = vec![];
+        let b = 10;
+        let a = if b % 2 == 0 { 'A' } else { 'Z' };
         let mut chess_squares_map = Map::new();
         for row in (1..=8).rev() {
             let mut chess_board_row = vec![];
@@ -50,11 +52,8 @@ impl ChessBoard {
                     (1, 5) => Name::King,
                     (_, _) => panic!(""),
                 };
-                let player_color = if idx <= 1 {
-                    ChessPlayerColor::Black
-                } else {
-                    ChessPlayerColor::White
-                };
+                type Color = ChessPlayerColor;
+                let player_color = if idx <= 1 { Color::Black } else { Color::White };
                 let chess_piece = ChessPiece::new(*coordinates, chess_piece_name, player_color);
                 self.squares_map.insert(*coordinates, Some(chess_piece));
             }
@@ -71,21 +70,12 @@ impl ChessBoard {
                 ChessPlayerColor::Black => Either::Left(row.iter().rev()),
                 ChessPlayerColor::White => Either::Right(row.iter()),
             }
-            .map(|col| {
-                if let Some(piece) = self.squares_map[&col.coordinates] {
-                    format!("{} ", piece)
-                } else {
-                    format!("{} ", col.color)
-                }
+            .map(|col| match self.squares_map[&col.coordinates] {
+                Some(piece) => format!("{} ", piece),
+                None => format!("{} ", col.color),
             })
             .collect::<String>();
-            center_string(
-                &drawn_row,
-                CenterOptions {
-                    fill_with: "-",
-                    fill_step: 2,
-                },
-            ) + "\n"
+            center_string(&drawn_row, CenterOptions::default()) + "\n"
         })
         .collect::<String>();
         println!("{}", printed_board);
@@ -109,9 +99,9 @@ pub fn center_string(to_center: &str, center_options: CenterOptions) -> String {
         fill_with,
         fill_step,
     } = center_options;
-    let (width, heigt) =
+    let (width, height) =
         terminal_size().unwrap_or((terminal_size::Width(100), terminal_size::Height(25)));
-    let (width, _heigt) = (width.0 as usize, heigt.0);
+    let (width, _height) = (width.0 as usize, height.0);
     let to_center_len = to_center.chars().count();
     let remaining_space = ((width - to_center_len) / 2) as usize;
     let remaing_space = match fill_step {

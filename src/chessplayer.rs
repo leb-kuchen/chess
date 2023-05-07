@@ -51,17 +51,16 @@ impl ChessPlayer {
         opposing_player
             .piece_squares_map
             .iter()
-            .filter_map(|(key, val)| {
+            .filter_map(|(_key, val)| {
                 let valid_squares = val.determine_valid_moves(
                     &chess_board,
                     &turn_details,
                     ValidPieceMoveSquaresCreationOptions::InsertOpponentsValidSquareOfDirection,
                 );
                 //  println!("{} {} {:#?}", key, val, valid_squares);
-                if valid_squares.valid_squares.contains(&self.king_position) {
-                    Some(*val)
-                } else {
-                    None
+                match valid_squares.valid_squares.contains(&self.king_position) {
+                    true => Some(*val),
+                    false => None,
                 }
             })
             .collect()
